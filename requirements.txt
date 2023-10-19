@@ -4,3 +4,4 @@ pytest-playwright
 allure-pytest
 requests
 python-dotenv
+black

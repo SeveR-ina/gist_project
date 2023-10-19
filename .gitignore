@@ -6,6 +6,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
+.idea
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
@@ -300,3 +301,17 @@ pyvenv.cfg
 pip-selfcheck.json
 
 # End of file
+/.idea/.gitignore
+/allure_results/api/769d175f-5d23-47eb-bc02-7a3d89cda938-container.json
+/allure_results/api/2900ad00-5021-491c-a6d0-70b259542eca-container.json
+/allure_results/api/5941cb24-fbcc-4f9d-9386-7519343500ec-result.json
+/allure_results/api/94955e6a-7a23-4ebb-ba44-557310c37f8f-container.json
+/allure_results/__init__.py
+/allure_results/api/c390314c-3988-4b25-99b6-c3d2a87d967e-container.json
+/allure_results/api/e2e895a2-4e2e-4a71-88a6-67a96eb9adf0-container.json
+/.idea/gist_project.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
