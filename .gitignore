@@ -168,7 +168,10 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
-.allure_results
+.allure_results/
+.allure_results/api
+.allure_results/ui
+tree_structure.txt
 
 # Translations
 *.mo
