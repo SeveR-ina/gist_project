@@ -26,7 +26,7 @@ GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 @allure.feature("/POST /gists")
 class TestGistCreationUI:
 
-    @allure.story("User can create gist via UI")
+    @allure.story("UI Test: User can create gist")
     @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.parametrize("browser_type", BROWSER_TYPES)
     def test_create_gist(self, browser_type):
@@ -35,7 +35,7 @@ class TestGistCreationUI:
             page = browser.new_page()
             login_page = LoginPage(page)
 
-            login_page.navigate(GITHUB_TOKEN)
+            login_page.navigate_to_login_page(GITHUB_TOKEN)
             with allure.step("Login"):
                 login_page.login(USER_EREKA_EMAIl, USER_PASS)
 

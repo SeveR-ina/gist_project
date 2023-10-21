@@ -53,7 +53,7 @@ def teardown_gist():
 @allure.feature("/GET Private Gists")
 class TestPrivateGists:
 
-    @allure.story("Test visibility of a gist via GET /gists")
+    @allure.story("API Test: check visibility of a private gist via /GET /gists")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_private_gist_visibility(self, setup_gist, teardown_gist, test_data):
         headers, body = test_data

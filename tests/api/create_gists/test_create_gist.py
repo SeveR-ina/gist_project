@@ -34,7 +34,7 @@ def test_data(request):
 @allure.feature("/POST /gists")
 class TestGistCreation:
 
-    @allure.story("User can create gist via API")
+    @allure.story("API Test: User can create gist")
     @allure.severity(allure.severity_level.BLOCKER)
     def test_create_gist(self, test_data):
         headers = {

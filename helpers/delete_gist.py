@@ -12,6 +12,6 @@ def delete_gist(gist_id, token):
     response = requests.delete(delete_url, headers=headers)
 
     if response.status_code == 204:
-        print(f"Gist {gist_id} deleted successfully via api.")
+        print(f"\nGist {gist_id} deleted successfully via api.")
     else:
-        print(f"Failed to delete gist {gist_id}. Status code: {response.status_code}")
+        print(f"\nFailed to delete gist {gist_id}. Status code: {response.status_code}")
