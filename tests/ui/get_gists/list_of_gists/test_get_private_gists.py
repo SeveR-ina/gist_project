@@ -52,11 +52,11 @@ class TestPrivateGists:
     @allure.story("UI Test: check visibility of a private gist on https://gist.github.com/username for authed user")
     @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.parametrize("browser_type", BROWSER_TYPES)
-    def test_private_gist_visibility_authed_user(self, browser_type, setup_gist, teardown_gist):
+    def test_get_private_gist_on_username_page_by_authed_user(self, browser_type, setup_gist, teardown_gist):
         with sync_playwright() as p:
             gist_id = setup_gist
 
-            browser = p[browser_type].launch(headless=False)
+            browser = p[browser_type].launch(headless=True)
             page = browser.new_page()
             login_page = LoginPage(page)
 
@@ -74,11 +74,11 @@ class TestPrivateGists:
     @allure.story("UI Test: check visibility of a private gist on https://gist.github.com/username for NOT authed user")
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.parametrize("browser_type", BROWSER_TYPES)
-    def test_private_gist_visibility(self, browser_type, setup_gist, teardown_gist):
+    def test_get_private_gist_on_username_page(self, browser_type, setup_gist, teardown_gist):
         with sync_playwright() as p:
             gist_id = setup_gist
 
-            browser = p[browser_type].launch(headless=False)
+            browser = p[browser_type].launch(headless=True)
             page = browser.new_page()
 
             gist_username_page = GistUserNamePage(page, gist_id, USERNAME_EREKA)

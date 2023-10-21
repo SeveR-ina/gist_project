@@ -12,6 +12,7 @@ import allure
 
 from helpers_ui.models.login_page import LoginPage
 from logs.logging_config import configure_logging
+from ui.models.dicover_gists_page import DiscoverGistsPage
 from ui.models.gist_username_page import GistUserNamePage
 
 configure_logging()
@@ -49,10 +50,27 @@ def teardown_gist():
 @allure.feature("/GET Public Gists")
 class TestPublicGists:
 
+    @allure.story("UI Test: check visibility of a public gist on https://gist.github.com/discover for NOT authed user")
+    @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.parametrize("browser_type", BROWSER_TYPES)
+    def test_public_gist_visibility_on_discover(self, browser_type, setup_gist, teardown_gist):
+        with sync_playwright() as p:
+            gist_id = setup_gist
+
+            browser = p[browser_type].launch(headless=False)
+            page = browser.new_page()
+
+            discover_gists_page = DiscoverGistsPage(page)
+            discover_gists_page.navigate()
+
+            with allure.step("Check that public gist is visible for stranger"):
+                expect(page.get_by_role("link", name=f"gist:{gist_id}")).to_be_visible()
+            browser.close()
+
     @allure.story("UI Test: check visibility of a public gist on https://gist.github.com/username for authed user")
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.parametrize("browser_type", BROWSER_TYPES)
-    def test_public_gist_visibility_authed_user(self, browser_type, setup_gist, teardown_gist):
+    def test_get_public_gist_on_username_page_by_authed_user(self, browser_type, setup_gist, teardown_gist):
         with sync_playwright() as p:
             gist_id = setup_gist
 
@@ -74,7 +92,7 @@ class TestPublicGists:
     @allure.story("UI Test: check visibility of a public gist on https://gist.github.com/username for NOT authed user")
     @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.parametrize("browser_type", BROWSER_TYPES)
-    def test_public_gist_visibility(self, browser_type, setup_gist, teardown_gist):
+    def test_get_public_gist_on_username_page(self, browser_type, setup_gist, teardown_gist):
         with sync_playwright() as p:
             gist_id = setup_gist
 

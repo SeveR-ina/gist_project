@@ -31,7 +31,7 @@ class TestGistCreationUI:
     @pytest.mark.parametrize("browser_type", BROWSER_TYPES)
     def test_create_gist(self, browser_type):
         with sync_playwright() as p:
-            browser = p[browser_type].launch(headless=False)
+            browser = p[browser_type].launch(headless=True)
             page = browser.new_page()
             login_page = LoginPage(page)
 
