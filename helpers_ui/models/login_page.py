@@ -4,8 +4,9 @@ class LoginPage:
         self.login_input = page.locator("#login_field")
         self.pass_input = page.locator("#password")
 
-    def navigate(self):
-       self.page.goto("https://github.com/login")
+    def navigate(self, token):
+        self.page.goto("https://github.com/login")
+        self.page.set_extra_http_headers({"Authorization": f"Bearer {token}"})
 
     def login(self, email, password):
         self.login_input.fill(email)
