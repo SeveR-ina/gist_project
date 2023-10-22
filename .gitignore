@@ -320,3 +320,5 @@ pip-selfcheck.json
 /.idea/vcs.xml
 /allure_results/api/
 /allure_results/
+/report.html
+/assets/style.css

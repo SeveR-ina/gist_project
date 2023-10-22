@@ -29,7 +29,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.12  # Set your Python version
+          python-version: 3.12
 
       - name: Install Playwright browsers
         run: npx playwright install
@@ -43,27 +43,12 @@ jobs:
       #          ALLURE_RESULTS_DIR: ./allure_results  # Set Allure results directory
       #        continue-on-error: true
 
-      - name: Run UI tests
-        run: pytest tests/ui/
-        env:
-          ALLURE_RESULTS_DIR: ./allure_results  # Set Allure results directory
+      - name: Run UI tests with pytest-html reporting
+        run: pytest tests/ui/ --html=report.html
         continue-on-error: true
 
-      - name: Install Allure
-        run: choco install allure-commandline -y
-        shell: PowerShell
-
-      #      - name: Generate Allure report
-      #        run: allure generate $env:ALLURE_RESULTS_DIR --clean -o $env:GITHUB_WORKSPACE/allure-report
-      #        shell: PowerShell
-
-      - name: Generate Allure report
-        run: |
-          "C:\Program Files\allure-2.18.1\bin\allure.bat" generate $env:ALLURE_RESULTS_DIR --clean -o $env:GITHUB_WORKSPACE/allure-report
-        shell: PowerShell
-
-      - name: Upload Allure report
+      - name: Save HTML report as artifact
         uses: actions/upload-artifact@v2
         with:
-          name: allure-report
-          path: $GITHUB_WORKSPACE/allure-report
+          name: html-report
+          path: report.html
