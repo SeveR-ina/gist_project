@@ -13,7 +13,7 @@ def create_gist(data, token):
 
     if response.status_code == 201:
         gist_id = response.json().get('id')
-        print(f"Gist {gist_id} created successfully.")
+        print(f"Gist {gist_id} created successfully via api.")
         return gist_id
     else:
         print(f"Failed to create a gist. Status code: {response.status_code}")

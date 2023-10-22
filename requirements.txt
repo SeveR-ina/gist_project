@@ -1,7 +1,6 @@
 pytest
 playwright
 pytest-playwright
-allure-pytest
-requests
 python-dotenv
-black
+requests
+allure-pytest
