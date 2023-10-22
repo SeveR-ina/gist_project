@@ -17,12 +17,12 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 GITHUB_API_URL = "https://api.github.com/gists/"
-GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+GITHUB_TOKEN_2 = os.getenv('GITHUB_TOKEN_2')
 
 
 @pytest.fixture(params=[
-    (get_headers_for_auth_user(GITHUB_TOKEN), PRIVATE_GIST),
-    (get_headers_for_auth_user(GITHUB_TOKEN), PUBLIC_GIST),
+    (get_headers_for_auth_user(GITHUB_TOKEN_2), PRIVATE_GIST),
+    (get_headers_for_auth_user(GITHUB_TOKEN_2), PUBLIC_GIST),
     (get_headers(), PUBLIC_GIST),
     (get_headers(), PRIVATE_GIST),
 ], ids=["AuthPrivate", "AuthPublic", "NoAuthPublic", "NoAuthPrivate"])
@@ -35,7 +35,7 @@ def test_data(request):
 def setup_gist(test_data):
     headers, body = test_data
     # Create a gist
-    gist_id = create_gist(body, GITHUB_TOKEN)
+    gist_id = create_gist(body, GITHUB_TOKEN_2)
     os.environ['GIST_ID'] = gist_id
     yield gist_id
 
@@ -47,7 +47,7 @@ def teardown_gist():
     yield
     # Delete the gist in teardown
     if gist_id:
-        delete_gist(gist_id, GITHUB_TOKEN)
+        delete_gist(gist_id, GITHUB_TOKEN_2)
 
 
 @allure.feature("/GET /gists/{gist_id}")

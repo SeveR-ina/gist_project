@@ -9,7 +9,7 @@ from helpers_api.headers import get_headers_for_auth_user, get_bad_headers
 
 load_dotenv()
 GITHUB_API_URL = "https://api.github.com/gists"
-GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+GITHUB_TOKEN_2 = os.getenv('GITHUB_TOKEN_2')
 
 
 @allure.feature("/POST /gists")
@@ -19,13 +19,14 @@ class TestGistCreationStatuses:
     @allure.severity(allure.severity_level.BLOCKER)
     def test_201_status_for_post_gist(self):
         with allure.step("/POST /gists and get response"):
-            response = requests.post(GITHUB_API_URL, headers=get_headers_for_auth_user(GITHUB_TOKEN), json=PRIVATE_GIST)
+            response = requests.post(GITHUB_API_URL,
+                                     headers=get_headers_for_auth_user(GITHUB_TOKEN_2), json=PRIVATE_GIST)
 
         with allure.step("Verify response status code"):
             assert response.status_code == 201, f"Expected status code 201, but got {response.status_code}"
 
         gist_id = response.json().get('id')
-        delete_gist(gist_id, GITHUB_TOKEN)
+        delete_gist(gist_id, GITHUB_TOKEN_2)
 
     @allure.story("API Test: Check 400 status for /POST /gists")
     @allure.severity(allure.severity_level.NORMAL)
@@ -49,7 +50,7 @@ class TestGistCreationStatuses:
     @allure.severity(allure.severity_level.NORMAL)
     def test_422_status_for_post_gist(self):
         with allure.step("/POST /gists and get response"):
-            response = requests.post(GITHUB_API_URL, headers=get_headers_for_auth_user(GITHUB_TOKEN), json="")
+            response = requests.post(GITHUB_API_URL, headers=get_headers_for_auth_user(GITHUB_TOKEN_2), json="")
 
         with allure.step("Verify response status code"):
             assert response.status_code == 422, f"Expected status code 422, but got {response.status_code}"

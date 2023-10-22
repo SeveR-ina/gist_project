@@ -8,19 +8,23 @@ from dotenv import load_dotenv
 from playwright.sync_api import expect, sync_playwright
 
 from helpers_api.delete_gist import delete_gist
-from helpers.models.gist_create_page import GistCreatePage
-from helpers.models.login_page import LoginPage
+from helpers_ui.models.gist_create_page import GistCreatePage
+from helpers_ui.models.login_page import LoginPage
 from logs.logging_config import configure_logging
 
 configure_logging()
 logger = logging.getLogger(__name__)
 
-BROWSER_TYPES = ["chromium", "webkit"]
+# BROWSER_TYPES = ["chromium", "webkit"]
+BROWSER_TYPES = ["chromium"]
 
 load_dotenv()
-USER_EREKA_EMAIl = os.getenv('USER_EREKA_EMAIl')
 USER_PASS = os.getenv('USER_PASS')
-GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+
+# USER_EREKA_EMAIl = os.getenv('USER_EREKA_EMAIl')
+
+GITHUB_TOKEN_2 = os.getenv('GITHUB_TOKEN_2')
+USER_MAX_EMAIl = os.getenv('USER_MAX_EMAIl')
 
 
 @allure.feature("/POST /gists")
@@ -35,9 +39,9 @@ class TestGistCreationUI:
             page = browser.new_page()
             login_page = LoginPage(page)
 
-            login_page.navigate_to_login_page(GITHUB_TOKEN)
+            login_page.navigate_to_login_page(GITHUB_TOKEN_2)
             with allure.step("Login"):
-                login_page.login(USER_EREKA_EMAIl, USER_PASS)
+                login_page.login(USER_MAX_EMAIl, USER_PASS)
 
             gist_create_page = GistCreatePage(page)
             gist_create_page.navigate()
@@ -74,4 +78,4 @@ def teardown(request):
             request.node.parent.name == "TestGistCreationUI"
             and request.node.rep_call.passed
     ):
-        delete_gist(gist_id, GITHUB_TOKEN)
+        delete_gist(gist_id, GITHUB_TOKEN_2)

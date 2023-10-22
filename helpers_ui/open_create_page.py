@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright
 
-from helpers.login import login
-from helpers.models.gist_create_page import GistCreatePage
+from helpers_ui.login import login
+from helpers_ui.models.gist_create_page import GistCreatePage
 
 
 def open_create_gist_page(page, email, password, token):

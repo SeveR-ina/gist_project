@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright
-from helpers.models.login_page import LoginPage
+from helpers_ui.models.login_page import LoginPage
 
 
 def login(page, email, password, token):
