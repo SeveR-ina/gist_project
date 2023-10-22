@@ -3,32 +3,14 @@ from dotenv import load_dotenv
 import requests
 import pytest
 import allure
-import logging
 
+from helpers.bodies import PRIVATE_GIST
 from helpers.delete_gist import delete_gist
-from logs.logging_config import configure_logging
-
-configure_logging()
-logger = logging.getLogger(__name__)
+from helpers.headers import get_headers_for_auth_user
 
 load_dotenv()
 GITHUB_API_URL = "https://api.github.com/gists"
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
-
-
-@pytest.fixture(params=[
-    {
-        "description": "Test Gist 1",
-        "public": False,
-        "files": {
-            "file1.txt": {
-                "content": "This is a test file"
-            }
-        }
-    }
-])
-def test_data(request):
-    return request.param
 
 
 @allure.feature("/POST /gists")
@@ -36,17 +18,9 @@ class TestGistCreation:
 
     @allure.story("API Test: User can create gist")
     @allure.severity(allure.severity_level.BLOCKER)
-    def test_create_gist(self, test_data):
-        headers = {
-            "Accept": "application/vnd.github+json",
-            "Authorization": f"Bearer {GITHUB_TOKEN}",
-            "X-GitHub-Api-Version": "2022-11-28",
-        }
-
-        logger.info(f"Test Data: {test_data}")
-
+    def test_create_gist(self):
         with allure.step("/POST /gists and get response"):
-            response = requests.post(GITHUB_API_URL, headers=headers, json=test_data)
+            response = requests.post(GITHUB_API_URL, headers=get_headers_for_auth_user(GITHUB_TOKEN), json=PRIVATE_GIST)
 
         with allure.step("Verify response status code"):
             assert response.status_code == 201, f"Expected status code 201, but got {response.status_code}"

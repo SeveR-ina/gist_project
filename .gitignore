@@ -319,3 +319,4 @@ pip-selfcheck.json
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/vcs.xml
 /allure_results/api/
+/allure_results/
