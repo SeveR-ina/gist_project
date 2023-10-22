@@ -54,7 +54,7 @@ def teardown_gist():
 @allure.feature("/GET Private Gists")
 class TestPrivateGists:
 
-    @pytest.mark.skip
+    @pytest.mark.skip(reason="To not load github rest api, so they won't limit my testing")
     @allure.story("UI Test: check visibility of a private gist on https://gist.github.com/username for authed user")
     @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.parametrize("browser_type", BROWSER_TYPES)
@@ -77,7 +77,7 @@ class TestPrivateGists:
                 expect(page.get_by_role("link", name=f"gist:{gist_id}")).to_be_visible()
             browser.close()
 
-    @pytest.mark.skip
+    @pytest.mark.skip(reason="To not load github rest api, so they won't limit my testing")
     @allure.story("UI Test: check visibility of a private gist on https://gist.github.com/username for NOT authed user")
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.parametrize("browser_type", BROWSER_TYPES)

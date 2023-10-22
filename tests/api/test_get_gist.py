@@ -53,6 +53,7 @@ def teardown_gist():
 @allure.feature("/GET /gists/{gist_id}")
 class TestGist:
 
+    @pytest.mark.skip(reason="To not load github rest api, so they won't limit my testing")
     @allure.story("API Test: check visibility of gist via /GET /gists/{gist_id}")
     @allure.severity(allure.severity_level.BLOCKER)
     def test_api_gist_visibility(self, setup_gist, teardown_gist, test_data):

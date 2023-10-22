@@ -37,15 +37,13 @@ jobs:
       - name: Install project dependencies
         run: pip install -r requirements.txt
 
-      #      - name: Run API tests
-      #        run: pytest tests/api/
-      #        env:
-      #          ALLURE_RESULTS_DIR: ./allure_results  # Set Allure results directory
-      #        continue-on-error: true
-
-      - name: Run UI tests with pytest-html reporting
-        run: pytest tests/ui/ --html=report.html
+      - name: Run api and ui tests with pytest-html reporting
+        run: pytest tests/ --html=report.html
         continue-on-error: true
+
+      #      - name: Run UI tests with pytest-html reporting
+      #        run: pytest tests/ui/ --html=report.html
+      #        continue-on-error: true
 
       - name: Save HTML report as artifact
         uses: actions/upload-artifact@v2

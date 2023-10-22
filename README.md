@@ -36,6 +36,14 @@ This project is designed to test the functionality of getting and creating GitHu
     pytest tests/ui
     ```
 
+### Via pytest-html report
+
+To run all tests:
+
+   ```
+   pytest tests --html=report.html
+   ```
+
 ### Via Allure
 
 Before using Allure reporting, you need to have the Allure command-line tool installed on your machine. You can follow
@@ -67,3 +75,20 @@ docker-compose build
 ```
 docker-compose up
 ```
+
+## Additional information
+
+Some test are marked as skipped due to limit of working with github api.
+After executing the api helpers or running the api tests, github blocks user for some time, so tests start to fail.
+To minimize these risks, we skipped some tests.
+What tests are NOT skipped:
+
+UI:
+
+- test_create_gists.py (2 working tests)
+- test_get_one_private_gist.py (2 working tests)
+
+API:
+
+- test_create_gist.py (1 working test)
+- test_get_gists.py (4 working tests)

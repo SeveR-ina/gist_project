@@ -1,4 +1,6 @@
 import os
+
+import pytest
 from dotenv import load_dotenv
 import requests
 import allure
@@ -15,6 +17,7 @@ TOKEN_2 = os.getenv('TOKEN_2')
 @allure.feature("/POST /gists")
 class TestGistCreationStatuses:
 
+    @pytest.mark.skip(reason="To not load github rest api, so they won't limit my testing")
     @allure.story("API Test: Check 201 status for /POST /gists")
     @allure.severity(allure.severity_level.BLOCKER)
     def test_201_status_for_post_gist(self):
@@ -28,6 +31,7 @@ class TestGistCreationStatuses:
         gist_id = response.json().get('id')
         delete_gist(gist_id, TOKEN_2)
 
+    @pytest.mark.skip(reason="To not load github rest api, so they won't limit my testing")
     @allure.story("API Test: Check 400 status for /POST /gists")
     @allure.severity(allure.severity_level.NORMAL)
     def test_400_status_for_post_gist(self):
@@ -37,6 +41,7 @@ class TestGistCreationStatuses:
         with allure.step("Verify response status code"):
             assert response.status_code == 400, f"Expected status code 400, but got {response.status_code}"
 
+    @pytest.mark.skip(reason="To not load github rest api, so they won't limit my testing")
     @allure.story("API Test: Check 401 status for /POST /gists")
     @allure.severity(allure.severity_level.NORMAL)
     def test_401_status_for_post_gist(self):
@@ -46,6 +51,7 @@ class TestGistCreationStatuses:
         with allure.step("Verify response status code"):
             assert response.status_code == 401, f"Expected status code 401, but got {response.status_code}"
 
+    @pytest.mark.skip(reason="To not load github rest api, so they won't limit my testing")
     @allure.story("API Test: Check 422 status for /POST /gists")
     @allure.severity(allure.severity_level.NORMAL)
     def test_422_status_for_post_gist(self):

@@ -21,6 +21,7 @@ TOKEN_2 = os.getenv('TOKEN_2')
 USERNAME_EREKA = os.getenv('USERNAME_EREKA')
 USERNAME_MAX = os.getenv('USERNAME_MAX')
 
+
 @pytest.fixture(params=[
     (get_headers_for_auth_user(TOKEN_2), PRIVATE_GIST),
     (get_headers_for_auth_user(TOKEN_2), PUBLIC_GIST),
@@ -54,6 +55,7 @@ def teardown_gist():
 @allure.feature("/GET Gists via /users/{username}/gists")
 class TestGistInUsernameGists:
 
+    @pytest.mark.skip(reason="To not load github rest api, so they won't limit my testing")
     @allure.story("API Test: check visibility of gist via GET /users/{username}/gists")
     @allure.severity(allure.severity_level.BLOCKER)
     def test_api_gist_visibility_in_username_gists(self, setup_gist, teardown_gist, test_data):

@@ -20,6 +20,7 @@ class TestGetGistStatuses:
         with allure.step("Verify response status code"):
             assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
 
+    @pytest.mark.skip(reason="To not load github rest api, so they won't limit my testing")
     @allure.story("API Test: check 401 status for GET /gists")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_api_check_401_status(self):
@@ -29,7 +30,7 @@ class TestGetGistStatuses:
         with allure.step("Verify response status code"):
             assert response.status_code == 401, f"Expected status code 401, but got {response.status_code}"
 
-    @pytest.mark.skip(reason="Doesn't work while running in class. TODO: fix that")
+    @pytest.mark.skip(reason="Doesn't work while running in class. TODO: fix that")  # TODO: fix that
     @allure.story("API Test: check 400 status for GET /gists")
     @allure.severity(allure.severity_level.NORMAL)
     def test_api_check_400_status(self):

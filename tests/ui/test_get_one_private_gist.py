@@ -51,7 +51,6 @@ def teardown_gist():
 @allure.feature("/GET One Private Gist")
 class TestPrivateGist:
 
-    @pytest.mark.skip
     @allure.story("UI Test: check visibility of a private gist "
                   "on https://gist.github.com/username/gistId for NOT authed user")
     @allure.severity(allure.severity_level.CRITICAL)

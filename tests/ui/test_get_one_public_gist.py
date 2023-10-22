@@ -52,7 +52,7 @@ def teardown_gist():
 @allure.feature("/GET One Public Gist")
 class TestPublicGist:
 
-    @pytest.mark.skip
+    @pytest.mark.skip(reason="To not load github rest api, so they won't limit my testing")
     @allure.story("UI Test: check visibility of a public gist "
                   "on https://gist.github.com/username/gistId for NOT authed user")
     @allure.severity(allure.severity_level.BLOCKER)
