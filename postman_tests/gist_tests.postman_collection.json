@@ -1,0 +1,2709 @@
+{
+	"info": {
+		"_postman_id": "17f512bc-3ab0-498c-a59e-efd7d36e9e00",
+		"name": "gist_tests",
+		"description": "Tests for /GET /gists and /POST /gist  \n  \nCURLs taken from: [Rest API Gist](https://docs.github.com/ru/rest/gists/gists?apiVersion=2022-11-28)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2806433"
+	},
+	"item": [
+		{
+			"name": "/get",
+			"item": [
+				{
+					"name": "list_of_gists",
+					"item": [
+						{
+							"name": "check_statuses",
+							"item": [
+								{
+									"name": "/gists",
+									"item": [
+										{
+											"name": "/gists_status_200",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200 (OK)\", function () {\r",
+															"    pm.response.to.have.status(200);\r",
+															"});\r",
+															"\r",
+															"var jsonResponse = JSON.parse(responseBody);\r",
+															"var gistId = jsonResponse[0].id;\r",
+															"pm.environment.set(\"gist_id\", gistId);\r",
+															"\r",
+															"if (pm.response.headers.has('ETag')) {\r",
+															"    const etagValue = pm.response.headers.get('ETag');\r",
+															"    pm.environment.set('etag', etagValue);\r",
+															"    console.log(`ETag value saved: ${etagValue}`);\r",
+															"} else {\r",
+															"    console.error('ETag header not found in the response.');\r",
+															"}\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{gists_token_max}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/vnd.github+json"
+													},
+													{
+														"key": "X-GitHub-Api-Version",
+														"value": "2022-11-28"
+													}
+												],
+												"url": {
+													"raw": "https://api.github.com/gists",
+													"protocol": "https",
+													"host": [
+														"api",
+														"github",
+														"com"
+													],
+													"path": [
+														"gists"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "/gists_status_304",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 304 (Not Modified)\", function () {\r",
+															"    pm.response.to.have.status(304);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{gists_token_max}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/vnd.github+json"
+													},
+													{
+														"key": "Authorization",
+														"value": "",
+														"disabled": true
+													},
+													{
+														"key": "X-GitHub-Api-Version",
+														"value": "2022-11-28"
+													},
+													{
+														"key": "If-None-Match",
+														"value": "{{etag}}"
+													}
+												],
+												"url": {
+													"raw": "https://api.github.com/gists",
+													"protocol": "https",
+													"host": [
+														"api",
+														"github",
+														"com"
+													],
+													"path": [
+														"gists"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "/gists_status_400",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400 (400 Bad Request)\", function () {\r",
+															"    pm.response.to.have.status(400);\r",
+															"});\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{gists_token_max}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/vnd.github+json"
+													},
+													{
+														"key": "X-GitHub-Api-Version",
+														"value": "2024-11-28"
+													}
+												],
+												"url": {
+													"raw": "https://api.github.com/gists",
+													"protocol": "https",
+													"host": [
+														"api",
+														"github",
+														"com"
+													],
+													"path": [
+														"gists"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "/gists_status_401",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 401 (Unathorized)\", function () {\r",
+															"    pm.response.to.have.status(401);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/vnd.github+json"
+													},
+													{
+														"key": "X-GitHub-Api-Version",
+														"value": "2022-11-28"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer INVALID-TOKEN"
+													}
+												],
+												"url": {
+													"raw": "https://api.github.com/gists",
+													"protocol": "https",
+													"host": [
+														"api",
+														"github",
+														"com"
+													],
+													"path": [
+														"gists"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "/gists_status_404",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 404 (Not Found)\", function () {\r",
+															"    pm.response.to.have.status(404);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{gists_token_max}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/vnd.github+json"
+													},
+													{
+														"key": "X-GitHub-Api-Version",
+														"value": "2022-11-28"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer {{e_token}}",
+														"disabled": true
+													}
+												],
+												"url": {
+													"raw": "https://api.github.com/gistsa",
+													"protocol": "https",
+													"host": [
+														"api",
+														"github",
+														"com"
+													],
+													"path": [
+														"gistsa"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							],
+							"description": "tests for gist statuses"
+						},
+						{
+							"name": "integration_tests",
+							"item": [
+								{
+									"name": "gist_is_private",
+									"item": [
+										{
+											"name": "/gists is_visible (for_creator)",
+											"item": [
+												{
+													"name": "/gists_is_private",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"var responseBody = pm.response.json();\r",
+																	"var gistId = responseBody.id;\r",
+																	"pm.environment.set(\"gist_id\", gistId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "/gists_same_user",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"const expectedGistId = pm.environment.get('gist_id');\r",
+																	"const receivedGistId = pm.response.json();\r",
+																	"\r",
+																	"pm.test(\"Gist with ID \" + expectedGistId + \" is visible\", function () {\r",
+																	"    pm.expect(receivedGistId.some(gist => gist.id === expectedGistId)).to.be.true;\r",
+																	"});\r",
+																	""
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										},
+										{
+											"name": "is_NOT_visible_for_everyone_else",
+											"item": [
+												{
+													"name": "/gists for_not_authenticated_users",
+													"item": [
+														{
+															"name": "/gists_is_private",
+															"event": [
+																{
+																	"listen": "test",
+																	"script": {
+																		"exec": [
+																			"var responseBody = pm.response.json();\r",
+																			"var gistId = responseBody.id;\r",
+																			"pm.environment.set(\"gist_id\", gistId);"
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"auth": {
+																	"type": "bearer",
+																	"bearer": [
+																		{
+																			"key": "token",
+																			"value": "{{gists_token_max}}",
+																			"type": "string"
+																		}
+																	]
+																},
+																"method": "POST",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.github+json"
+																	},
+																	{
+																		"key": "X-GitHub-Api-Version",
+																		"value": "2022-11-28"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+																	"options": {
+																		"raw": {
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "https://api.github.com/gists",
+																	"protocol": "https",
+																	"host": [
+																		"api",
+																		"github",
+																		"com"
+																	],
+																	"path": [
+																		"gists"
+																	]
+																}
+															},
+															"response": []
+														},
+														{
+															"name": "/gists",
+															"event": [
+																{
+																	"listen": "test",
+																	"script": {
+																		"exec": [
+																			"const expectedGistId = pm.environment.get('gist_id');\r",
+																			"const receivedGistId = pm.response.json();\r",
+																			"\r",
+																			"pm.test(\"Private gist with ID \" + expectedGistId + \" should not be visible in /gists\", function () {\r",
+																			"    if (Array.isArray(receivedGistId) && receivedGistId.length > 0) {\r",
+																			"        pm.expect(receivedGistId.some(gist => gist.id === expectedGistId)).to.be.false;\r",
+																			"    } \r",
+																			"});"
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"auth": {
+																	"type": "noauth"
+																},
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.github+json"
+																	},
+																	{
+																		"key": "Authorization",
+																		"value": "Bearer <YOUR-TOKEN>",
+																		"disabled": true
+																	},
+																	{
+																		"key": "X-GitHub-Api-Version",
+																		"value": "2022-11-28"
+																	},
+																	{
+																		"key": "per_page",
+																		"value": "20",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "https://api.github.com/gists",
+																	"protocol": "https",
+																	"host": [
+																		"api",
+																		"github",
+																		"com"
+																	],
+																	"path": [
+																		"gists"
+																	]
+																}
+															},
+															"response": []
+														}
+													]
+												},
+												{
+													"name": "/gists for_the_other_user",
+													"item": [
+														{
+															"name": "/gists_is_private",
+															"event": [
+																{
+																	"listen": "test",
+																	"script": {
+																		"exec": [
+																			"var responseBody = pm.response.json();\r",
+																			"var gistId = responseBody.id;\r",
+																			"pm.environment.set(\"gist_id\", gistId);"
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"auth": {
+																	"type": "bearer",
+																	"bearer": [
+																		{
+																			"key": "token",
+																			"value": "{{gists_token_max}}",
+																			"type": "string"
+																		}
+																	]
+																},
+																"method": "POST",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.github+json"
+																	},
+																	{
+																		"key": "X-GitHub-Api-Version",
+																		"value": "2022-11-28"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+																	"options": {
+																		"raw": {
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "https://api.github.com/gists",
+																	"protocol": "https",
+																	"host": [
+																		"api",
+																		"github",
+																		"com"
+																	],
+																	"path": [
+																		"gists"
+																	]
+																}
+															},
+															"response": []
+														},
+														{
+															"name": "/gists_is_not_visible_by_other_user",
+															"event": [
+																{
+																	"listen": "test",
+																	"script": {
+																		"exec": [
+																			"const expectedGistId = pm.environment.get('gist_id');\r",
+																			"const receivedGistId = pm.response.json();\r",
+																			"\r",
+																			"pm.test(\"Gist with ID \" + expectedGistId + \" should not be visible for this user\", function () {\r",
+																			"    if (Array.isArray(receivedGistId) && receivedGistId.length > 0) {\r",
+																			"        pm.expect(receivedGistId.some(gist => gist.id === expectedGistId)).to.be.false;\r",
+																			"    } \r",
+																			"});"
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"auth": {
+																	"type": "noauth"
+																},
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.github+json"
+																	},
+																	{
+																		"key": "X-GitHub-Api-Version",
+																		"value": "2022-11-28"
+																	}
+																],
+																"url": {
+																	"raw": "https://api.github.com/gists",
+																	"protocol": "https",
+																	"host": [
+																		"api",
+																		"github",
+																		"com"
+																	],
+																	"path": [
+																		"gists"
+																	]
+																}
+															},
+															"response": []
+														}
+													]
+												},
+												{
+													"name": "/gists/public (in search engine)",
+													"item": [
+														{
+															"name": "/gists_is_private",
+															"event": [
+																{
+																	"listen": "test",
+																	"script": {
+																		"exec": [
+																			"var responseBody = pm.response.json();\r",
+																			"var gistId = responseBody.id;\r",
+																			"pm.environment.set(\"gist_id\", gistId);"
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"auth": {
+																	"type": "bearer",
+																	"bearer": [
+																		{
+																			"key": "token",
+																			"value": "{{gists_token_max}}",
+																			"type": "string"
+																		}
+																	]
+																},
+																"method": "POST",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.github+json"
+																	},
+																	{
+																		"key": "X-GitHub-Api-Version",
+																		"value": "2022-11-28"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+																	"options": {
+																		"raw": {
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "https://api.github.com/gists",
+																	"protocol": "https",
+																	"host": [
+																		"api",
+																		"github",
+																		"com"
+																	],
+																	"path": [
+																		"gists"
+																	]
+																}
+															},
+															"response": []
+														},
+														{
+															"name": "is_not_visible_in_search_engine",
+															"event": [
+																{
+																	"listen": "test",
+																	"script": {
+																		"exec": [
+																			"const expectedGistId = pm.environment.get('gist_id');\r",
+																			"const responseJson = pm.response.json();\r",
+																			"\r",
+																			"pm.test(\"Gist with ID \" + expectedGistId + \" is not visible\", function () {\r",
+																			"    pm.expect(responseJson).to.not.include(expectedGistId);\r",
+																			"});\r",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"auth": {
+																	"type": "noauth"
+																},
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.github+json"
+																	},
+																	{
+																		"key": "X-GitHub-Api-Version",
+																		"value": "2022-11-28"
+																	}
+																],
+																"url": {
+																	"raw": "https://api.github.com/gists/public?per_page=20",
+																	"protocol": "https",
+																	"host": [
+																		"api",
+																		"github",
+																		"com"
+																	],
+																	"path": [
+																		"gists",
+																		"public"
+																	],
+																	"query": [
+																		{
+																			"key": "page",
+																			"value": "1",
+																			"disabled": true
+																		},
+																		{
+																			"key": "per_page",
+																			"value": "20"
+																		}
+																	]
+																}
+															},
+															"response": []
+														}
+													]
+												},
+												{
+													"name": "/users/{username}/gists",
+													"item": [
+														{
+															"name": "/gists_is_private",
+															"event": [
+																{
+																	"listen": "test",
+																	"script": {
+																		"exec": [
+																			"var responseBody = pm.response.json();\r",
+																			"var gistId = responseBody.id;\r",
+																			"pm.environment.set(\"gist_id\", gistId);"
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"auth": {
+																	"type": "bearer",
+																	"bearer": [
+																		{
+																			"key": "token",
+																			"value": "{{gists_token_max}}",
+																			"type": "string"
+																		}
+																	]
+																},
+																"method": "POST",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.github+json"
+																	},
+																	{
+																		"key": "X-GitHub-Api-Version",
+																		"value": "2022-11-28"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+																	"options": {
+																		"raw": {
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "https://api.github.com/gists",
+																	"protocol": "https",
+																	"host": [
+																		"api",
+																		"github",
+																		"com"
+																	],
+																	"path": [
+																		"gists"
+																	]
+																}
+															},
+															"response": []
+														},
+														{
+															"name": "/users/USERNAME/gists",
+															"event": [
+																{
+																	"listen": "test",
+																	"script": {
+																		"exec": [
+																			"const expectedGistId = pm.environment.get('gist_id');\r",
+																			"const responseJson = pm.response.json();\r",
+																			"\r",
+																			"pm.test(\"Gist with ID \" + expectedGistId + \" is not visible\", function () {\r",
+																			"    pm.expect(responseJson).to.not.include(expectedGistId);\r",
+																			"});"
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"auth": {
+																	"type": "noauth"
+																},
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.github+json"
+																	},
+																	{
+																		"key": "X-GitHub-Api-Version",
+																		"value": "2022-11-28"
+																	}
+																],
+																"url": {
+																	"raw": "https://api.github.com/users/{{ereka_username}}/gists",
+																	"protocol": "https",
+																	"host": [
+																		"api",
+																		"github",
+																		"com"
+																	],
+																	"path": [
+																		"users",
+																		"{{ereka_username}}",
+																		"gists"
+																	]
+																}
+															},
+															"response": []
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "gist_is_public_visible_for_everyone",
+									"item": [
+										{
+											"name": "/gists for_the_same_user",
+											"item": [
+												{
+													"name": "/gists",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"var responseBody = pm.response.json();\r",
+																	"var gistId = responseBody.id;\r",
+																	"pm.environment.set(\"gist_id\", gistId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": true,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "/gists_same_user",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"const expectedGistId = pm.environment.get('gist_id');\r",
+																	"const receivedGistId = pm.response.json();\r",
+																	"\r",
+																	"pm.test(\"Gist with ID \" + expectedGistId + \" is visible\", function () {\r",
+																	"    pm.expect(receivedGistId.some(gist => gist.id === expectedGistId)).to.be.true;\r",
+																	"});\r",
+																	""
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										},
+										{
+											"name": "/gists for_the_other_user",
+											"item": [
+												{
+													"name": "/gists",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"var responseBody = pm.response.json();\r",
+																	"var gistId = responseBody.id;\r",
+																	"pm.environment.set(\"gist_id\", gistId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": true,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "/gists_is_not_visible_by_other_user",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"const expectedGistId = pm.environment.get('gist_id');\r",
+																	"const receivedGistId = pm.response.json();\r",
+																	"\r",
+																	"pm.test(\"Gist with ID \" + expectedGistId + \" should not be visible for this user\", function () {\r",
+																	"    if (Array.isArray(receivedGistId) && receivedGistId.length > 0) {\r",
+																	"        pm.expect(receivedGistId.some(gist => gist.id === expectedGistId)).to.be.false;\r",
+																	"    } \r",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "noauth"
+														},
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										},
+										{
+											"name": "/gists/public (in search engine)",
+											"item": [
+												{
+													"name": "/gists",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"var responseBody = pm.response.json();\r",
+																	"var gistId = responseBody.id;\r",
+																	"pm.environment.set(\"gist_id\", gistId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": true,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "is_visible_in_search_engine",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"const expectedGistId = pm.environment.get('gist_id');\r",
+																	"const responseJson = pm.response.json();\r",
+																	"\r",
+																	"pm.test(\"Gist with ID \" + expectedGistId + \" should exist\", function () {\r",
+																	"    pm.expect(responseJson.some(gist => gist.id === expectedGistId)).to.be.true;\r",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "noauth"
+														},
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"url": {
+															"raw": "https://api.github.com/gists/public?per_page=20",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists",
+																"public"
+															],
+															"query": [
+																{
+																	"key": "page",
+																	"value": "1",
+																	"disabled": true
+																},
+																{
+																	"key": "per_page",
+																	"value": "20"
+																}
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										},
+										{
+											"name": "/users/{username}/gists",
+											"item": [
+												{
+													"name": "/gists",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"var responseBody = pm.response.json();\r",
+																	"var gistId = responseBody.id;\r",
+																	"pm.environment.set(\"gist_id\", gistId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": true,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "/users/USERNAME/gists",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"const expectedGistId = pm.environment.get('gist_id');\r",
+																	"const responseJson = pm.response.json();\r",
+																	"\r",
+																	"pm.test(\"Gist with ID \" + expectedGistId + \" is visible\", function () {\r",
+																	"    pm.expect(responseJson.some(gist => gist.id === expectedGistId)).to.be.true;\r",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "noauth"
+														},
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"url": {
+															"raw": "https://api.github.com/users/{{ereka_username}}/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"users",
+																"{{ereka_username}}",
+																"gists"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					],
+					"description": "tests for gist list"
+				},
+				{
+					"name": "one_gist",
+					"item": [
+						{
+							"name": "check_statuses",
+							"item": [
+								{
+									"name": "/gists/{{gist_id}}_status_200",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200 (OK)\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{gists_token_max}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.github+json"
+											},
+											{
+												"key": "X-GitHub-Api-Version",
+												"value": "2022-11-28"
+											}
+										],
+										"url": {
+											"raw": "https://api.github.com/gists/{{gist_id}}",
+											"protocol": "https",
+											"host": [
+												"api",
+												"github",
+												"com"
+											],
+											"path": [
+												"gists",
+												"{{gist_id}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "integration_tests",
+							"item": [
+								{
+									"name": "gist_is_private_visible_for_everyone",
+									"item": [
+										{
+											"name": "/gists/id is_visible_for_the_same_user",
+											"item": [
+												{
+													"name": "/gists",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"var responseBody = pm.response.json();\r",
+																	"var gistId = responseBody.id;\r",
+																	"pm.environment.set(\"gist_id\", gistId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "/gists/{{gist_id}}_same_user",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Status code is 200 (OK)\", function () {\r",
+																	"    pm.response.to.have.status(200);\r",
+																	"});\r",
+																	"\r",
+																	"const expectedGistId = pm.environment.get('gist_id');\r",
+																	"const receivedGistId = pm.response.json().id; \r",
+																	"\r",
+																	"pm.test(\"Gist with ID \" + expectedGistId + \" is visible\", function () {\r",
+																	"    pm.expect(receivedGistId).to.equal(expectedGistId);\r",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"url": {
+															"raw": "https://api.github.com/gists/{{gist_id}}",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists",
+																"{{gist_id}}"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										},
+										{
+											"name": "/gists/id_is_visible_for_another_user",
+											"item": [
+												{
+													"name": "/gists",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"var responseBody = pm.response.json();\r",
+																	"var gistId = responseBody.id;\r",
+																	"pm.environment.set(\"gist_id\", gistId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "/gists/{{gist_id}}_another_user",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Status code is 200 (OK)\", function () {\r",
+																	"    pm.response.to.have.status(200);\r",
+																	"});\r",
+																	"\r",
+																	"const expectedGistId = pm.environment.get('gist_id');\r",
+																	"const receivedGistId = pm.response.json().id; \r",
+																	"\r",
+																	"pm.test(\"Gist with ID \" + expectedGistId + \" is visible\", function () {\r",
+																	"    pm.expect(receivedGistId).to.equal(expectedGistId);\r",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "noauth"
+														},
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"url": {
+															"raw": "https://api.github.com/gists/{{gist_id}}",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists",
+																"{{gist_id}}"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										},
+										{
+											"name": "/gists/id is_visible_for_not_auth_user",
+											"item": [
+												{
+													"name": "/gists",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"var responseBody = pm.response.json();\r",
+																	"var gistId = responseBody.id;\r",
+																	"pm.environment.set(\"gist_id\", gistId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "/gists/{{gist_id}}",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Status code is 200 (OK)\", function () {\r",
+																	"    pm.response.to.have.status(200);\r",
+																	"});\r",
+																	"\r",
+																	"const expectedGistId = pm.environment.get('gist_id');\r",
+																	"const receivedGistId = pm.response.json().id; \r",
+																	"\r",
+																	"pm.test(\"Gist with ID \" + expectedGistId + \" is visible\", function () {\r",
+																	"    pm.expect(receivedGistId).to.equal(expectedGistId);\r",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "noauth"
+														},
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"url": {
+															"raw": "https://api.github.com/gists/{{gist_id}}",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists",
+																"{{gist_id}}"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "gist_is_public_visible_for_everyone",
+									"item": [
+										{
+											"name": "/gists/id is_visible_for_the_same_user",
+											"item": [
+												{
+													"name": "/gists",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"var responseBody = pm.response.json();\r",
+																	"var gistId = responseBody.id;\r",
+																	"pm.environment.set(\"gist_id\", gistId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "/gists/{{gist_id}}_same_user",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Status code is 200 (OK)\", function () {\r",
+																	"    pm.response.to.have.status(200);\r",
+																	"});\r",
+																	"\r",
+																	"const expectedGistId = pm.environment.get('gist_id');\r",
+																	"const receivedGistId = pm.response.json().id; \r",
+																	"\r",
+																	"pm.test(\"Gist with ID \" + expectedGistId + \" is visible\", function () {\r",
+																	"    pm.expect(receivedGistId).to.equal(expectedGistId);\r",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"url": {
+															"raw": "https://api.github.com/gists/{{gist_id}}",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists",
+																"{{gist_id}}"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										},
+										{
+											"name": "/gists/id_is_visible_for_another_user",
+											"item": [
+												{
+													"name": "/gists",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"var responseBody = pm.response.json();\r",
+																	"var gistId = responseBody.id;\r",
+																	"pm.environment.set(\"gist_id\", gistId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "/gists/{{gist_id}}_another_user",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Status code is 200 (OK)\", function () {\r",
+																	"    pm.response.to.have.status(200);\r",
+																	"});\r",
+																	"\r",
+																	"const expectedGistId = pm.environment.get('gist_id');\r",
+																	"const receivedGistId = pm.response.json().id; \r",
+																	"\r",
+																	"pm.test(\"Gist with ID \" + expectedGistId + \" is visible\", function () {\r",
+																	"    pm.expect(receivedGistId).to.equal(expectedGistId);\r",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "noauth"
+														},
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"url": {
+															"raw": "https://api.github.com/gists/{{gist_id}}",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists",
+																"{{gist_id}}"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										},
+										{
+											"name": "/gists/id is_visible_for_not_auth_user",
+											"item": [
+												{
+													"name": "/gists",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"var responseBody = pm.response.json();\r",
+																	"var gistId = responseBody.id;\r",
+																	"pm.environment.set(\"gist_id\", gistId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{gists_token_max}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": true,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "https://api.github.com/gists",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "/gists/{{gist_id}}",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Status code is 200 (OK)\", function () {\r",
+																	"    pm.response.to.have.status(200);\r",
+																	"});\r",
+																	"\r",
+																	"const expectedGistId = pm.environment.get('gist_id');\r",
+																	"const receivedGistId = pm.response.json().id; \r",
+																	"\r",
+																	"pm.test(\"Gist with ID \" + expectedGistId + \" is visible\", function () {\r",
+																	"    pm.expect(receivedGistId).to.equal(expectedGistId);\r",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"auth": {
+															"type": "noauth"
+														},
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.github+json"
+															},
+															{
+																"key": "X-GitHub-Api-Version",
+																"value": "2022-11-28"
+															}
+														],
+														"url": {
+															"raw": "https://api.github.com/gists/{{gist_id}}",
+															"protocol": "https",
+															"host": [
+																"api",
+																"github",
+																"com"
+															],
+															"path": [
+																"gists",
+																"{{gist_id}}"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					],
+					"description": "tests for one gist"
+				}
+			],
+			"description": "tests for getting gists"
+		},
+		{
+			"name": "/post",
+			"item": [
+				{
+					"name": "check_statuses",
+					"item": [
+						{
+							"name": "/gists_status_201",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201 (Created)\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"var responseBody = pm.response.json();\r",
+											"var gistId = responseBody.id;\r",
+											"pm.environment.set(\"gist_id\", gistId);\r",
+											"\r",
+											"if (pm.response.headers.has('ETag')) {\r",
+											"    const etagValue = pm.response.headers.get('ETag');\r",
+											"    pm.environment.set('etag', etagValue);\r",
+											"    console.log(`ETag value saved: ${etagValue}`);\r",
+											"} else {\r",
+											"    console.error('ETag header not found in the response.');\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{gists_token_max}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.github+json"
+									},
+									{
+										"key": "X-GitHub-Api-Version",
+										"value": "2022-11-28"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/gists",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"gists"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/gists_status_400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400 (Bad Request)\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{gists_token_max}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.github+json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <YOUR-TOKEN>",
+										"disabled": true
+									},
+									{
+										"key": "X-GitHub-Api-Version",
+										"value": "2022-11-28"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": yes,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/gists",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"gists"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/gists_status_400_api_version",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400 (Created)\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{gists_token_max}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.github+json"
+									},
+									{
+										"key": "X-GitHub-Api-Version",
+										"value": "2024-11-28"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/gists",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"gists"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/gists_status_401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401 (Unauthorized)\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "111",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.github+json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <YOUR-TOKEN>",
+										"disabled": true
+									},
+									{
+										"key": "X-GitHub-Api-Version",
+										"value": "2022-11-28"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/gists",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"gists"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/gists_status_404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404 (Not Found)\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{gists_token_max}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.github+json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <YOUR-TOKEN>",
+										"disabled": true
+									},
+									{
+										"key": "X-GitHub-Api-Version",
+										"value": "2022-11-28"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Example of a gist\",\r\n    \"public\": false,\r\n    \"files\": {\r\n        \"README.md\": {\r\n            \"content\": \"Hello World\"\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/gistsa",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"gistsa"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/gists_status_422",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 422 (Unprocessable Entity)\", function () {\r",
+											"    pm.response.to.have.status(422);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{gists_token_max}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.github+json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <YOUR-TOKEN>",
+										"disabled": true
+									},
+									{
+										"key": "X-GitHub-Api-Version",
+										"value": "2022-11-28"
+									},
+									{
+										"key": "If-None-Match",
+										"value": "{{etag}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/gists",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"gists"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/delete",
+			"item": [
+				{
+					"name": "/gists/gist_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204 (No Content)\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gists_token_max}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.github+json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer <YOUR-TOKEN>",
+								"disabled": true
+							},
+							{
+								"key": "X-GitHub-Api-Version",
+								"value": "2022-11-28"
+							}
+						],
+						"url": {
+							"raw": "https://api.github.com/gists/{{gist_id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"gists",
+								"{{gist_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
