@@ -1,0 +1,61 @@
+name: CI/CD for Gist Project
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: windows-latest  # Use Windows runner
+
+    env:
+      TOKEN: ${{ secrets.TOKEN }}
+      TOKEN_2: ${{ secrets.TOKEN_2 }}
+      USERNAME_EREKA: ${{ secrets.USERNAME_EREKA }}
+      USERNAME_MAX: ${{ secrets.USERNAME_MAX }}
+      USER_EREKA_EMAIL: ${{ secrets.USER_EREKA_EMAIL }}
+      USER_MAX_EMAIL: ${{ secrets.USER_MAX_EMAIL }}
+      USER_PASS: ${{ secrets.USER_PASS }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: master
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12  # Set your Python version
+
+      - name: Install project dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run API tests
+        run: pytest tests/api/
+        env:
+          ALLURE_RESULTS_DIR: ./allure_results  # Set Allure results directory
+        continue-on-error: true
+
+      - name: Run UI tests
+        run: pytest tests/ui/
+        env:
+          ALLURE_RESULTS_DIR: ./allure_results  # Set Allure results directory
+        continue-on-error: true
+
+      - name: Install Allure
+        run: |
+          choco install allure-commandline -y
+        shell: PowerShell
+
+      - name: Generate Allure report
+        run: allure generate $ALLURE_RESULTS_DIR --clean -o $GITHUB_WORKSPACE/allure-report
+
+      - name: Upload Allure report
+        uses: actions/upload-artifact@v2
+        with:
+          name: allure-report
+          path: $GITHUB_WORKSPACE/allure-report
