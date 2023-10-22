@@ -37,7 +37,7 @@ jobs:
       - name: Install project dependencies
         run: pip install -r requirements.txt
 
-#      - name: Run API tests
+      #      - name: Run API tests
       #        run: pytest tests/api/
       #        env:
       #          ALLURE_RESULTS_DIR: ./allure_results  # Set Allure results directory
@@ -50,12 +50,12 @@ jobs:
         continue-on-error: true
 
       - name: Install Allure
-        run: |
-          choco install allure-commandline -y
+        run: choco install allure-commandline -y
         shell: PowerShell
 
       - name: Generate Allure report
-        run: allure generate $ALLURE_RESULTS_DIR --clean -o $GITHUB_WORKSPACE/allure-report
+        run: allure generate $env:ALLURE_RESULTS_DIR --clean -o $env:GITHUB_WORKSPACE/allure-report
+        shell: PowerShell
 
       - name: Upload Allure report
         uses: actions/upload-artifact@v2

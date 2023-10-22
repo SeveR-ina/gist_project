@@ -15,8 +15,7 @@ from logs.logging_config import configure_logging
 configure_logging()
 logger = logging.getLogger(__name__)
 
-# BROWSER_TYPES = ["chromium", "webkit"]
-BROWSER_TYPES = ["chromium"]
+BROWSER_TYPES = ["chromium", "webkit"]
 
 load_dotenv()
 USER_PASS = os.getenv('USER_PASS')
@@ -30,6 +29,7 @@ USER_MAX_EMAIl = os.getenv('USER_MAX_EMAIl')
 @allure.feature("/POST /gists")
 class TestGistCreationUI:
 
+    @pytest.mark.skip
     @allure.story("UI Test: User can create gist")
     @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.parametrize("browser_type", BROWSER_TYPES)

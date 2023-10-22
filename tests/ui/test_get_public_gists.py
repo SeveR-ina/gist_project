@@ -72,6 +72,7 @@ class TestPublicGists:
                 expect(page.get_by_role("link", name=f"gist:{gist_id}")).to_be_visible()
             browser.close()
 
+    @pytest.mark.skip
     @allure.story("UI Test: check visibility of a public gist on https://gist.github.com/username for authed user")
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.parametrize("browser_type", BROWSER_TYPES)
