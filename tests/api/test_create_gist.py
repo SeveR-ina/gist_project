@@ -4,9 +4,9 @@ import requests
 import pytest
 import allure
 
-from helpers.bodies import PRIVATE_GIST
-from helpers.delete_gist import delete_gist
-from helpers.headers import get_headers_for_auth_user
+from helpers_api.bodies import PRIVATE_GIST
+from helpers_api.delete_gist import delete_gist
+from helpers_api.headers import get_headers_for_auth_user
 
 load_dotenv()
 GITHUB_API_URL = "https://api.github.com/gists"
@@ -25,17 +25,13 @@ class TestGistCreation:
         with allure.step("Verify response status code"):
             assert response.status_code == 201, f"Expected status code 201, but got {response.status_code}"
 
-        response_json = response.json()
-        gist_id = response_json.get('id')
+        gist_id = response.json().get('id')
 
         with allure.step("Verify if gist id exists"):
             assert gist_id, "Gist ID not found in response"
 
         allure.dynamic.title(f"Test /POST with Gist ID: {gist_id}")
-
         os.environ['GIST_ID'] = gist_id
-
-        print(f"Gist {gist_id} created successfully.")
 
 
 @allure.step("Delete gist")

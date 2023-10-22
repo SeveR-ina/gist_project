@@ -5,9 +5,9 @@ import logging
 
 from playwright.sync_api import sync_playwright, expect
 
-from helpers.bodies import PUBLIC_GIST
-from helpers.create_gist import create_gist
-from helpers.delete_gist import delete_gist
+from helpers_api.bodies import PUBLIC_GIST
+from helpers_api.create_gist import create_gist
+from helpers_api.delete_gist import delete_gist
 import allure
 
 from logs.logging_config import configure_logging

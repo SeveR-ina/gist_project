@@ -3,7 +3,7 @@ import requests
 
 import allure
 
-from helpers.headers import get_headers, get_bad_headers, get_headers_for_auth_user
+from helpers_api.headers import get_headers, get_bad_headers, get_headers_for_auth_user
 
 GITHUB_API_URL = "https://api.github.com/gists"
 

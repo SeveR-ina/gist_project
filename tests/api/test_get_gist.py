@@ -4,12 +4,12 @@ import requests
 from dotenv import load_dotenv
 import logging
 
-from helpers.bodies import PRIVATE_GIST, PUBLIC_GIST
-from helpers.create_gist import create_gist
-from helpers.delete_gist import delete_gist
+from helpers_api.bodies import PRIVATE_GIST, PUBLIC_GIST
+from helpers_api.create_gist import create_gist
+from helpers_api.delete_gist import delete_gist
 import allure
 
-from helpers.headers import get_headers, get_headers_for_auth_user
+from helpers_api.headers import get_headers, get_headers_for_auth_user
 from logs.logging_config import configure_logging
 
 configure_logging()

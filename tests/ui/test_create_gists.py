@@ -7,9 +7,9 @@ import pytest
 from dotenv import load_dotenv
 from playwright.sync_api import expect, sync_playwright
 
-from helpers.delete_gist import delete_gist
-from helpers_ui.models.gist_create_page import GistCreatePage
-from helpers_ui.models.login_page import LoginPage
+from helpers_api.delete_gist import delete_gist
+from helpers.models.gist_create_page import GistCreatePage
+from helpers.models.login_page import LoginPage
 from logs.logging_config import configure_logging
 
 configure_logging()
