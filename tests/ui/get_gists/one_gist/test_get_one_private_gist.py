@@ -11,7 +11,7 @@ from helpers.delete_gist import delete_gist
 import allure
 
 from logs.logging_config import configure_logging
-from ui.models.created_gist_page import CreatedGistPage
+from tests.ui.models.created_gist_page import CreatedGistPage
 
 configure_logging()
 logger = logging.getLogger(__name__)

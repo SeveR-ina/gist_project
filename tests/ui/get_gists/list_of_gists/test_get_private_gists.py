@@ -12,7 +12,7 @@ import allure
 
 from helpers_ui.models.login_page import LoginPage
 from logs.logging_config import configure_logging
-from ui.models.gist_username_page import GistUserNamePage
+from tests.ui.models.gist_username_page import GistUserNamePage
 
 configure_logging()
 logger = logging.getLogger(__name__)

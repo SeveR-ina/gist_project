@@ -60,7 +60,7 @@ class TestGistCreationUI:
             gist_id = page.url.split("/")[-1]
             os.environ['GIST_ID'] = gist_id
 
-            print(f"Gist {gist_id} created successfully via ui.")
+            print(f"Gist {gist_id} created successfully via tests_ui.")
 
             browser.close()
 

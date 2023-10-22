@@ -12,8 +12,8 @@ import allure
 
 from helpers_ui.models.login_page import LoginPage
 from logs.logging_config import configure_logging
-from ui.models.dicover_gists_page import DiscoverGistsPage
-from ui.models.gist_username_page import GistUserNamePage
+from tests.ui.models.dicover_gists_page import DiscoverGistsPage
+from tests.ui.models.gist_username_page import GistUserNamePage
 
 configure_logging()
 logger = logging.getLogger(__name__)
@@ -57,7 +57,7 @@ class TestPublicGists:
         with sync_playwright() as p:
             gist_id = setup_gist
 
-            browser = p[browser_type].launch(headless=False)
+            browser = p[browser_type].launch(headless=True)
             page = browser.new_page()
 
             discover_gists_page = DiscoverGistsPage(page)
