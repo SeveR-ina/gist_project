@@ -22,7 +22,7 @@ load_dotenv()
 # GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 # USERNAME_EREKA = os.getenv('USERNAME_EREKA')
 
-GITHUB_TOKEN_2 = os.getenv('GITHUB_TOKEN_2')
+TOKEN_2 = os.getenv('TOKEN_2')
 USER_MAX_EMAIl = os.getenv('USER_MAX_EMAIl')
 USERNAME_MAX = os.getenv('USERNAME_MAX')
 
@@ -34,7 +34,7 @@ BROWSER_TYPES = ["chromium", "webkit"]
 def setup_gist():
     body = PUBLIC_GIST
     # Create a gist
-    gist_id = create_gist(body, GITHUB_TOKEN_2)
+    gist_id = create_gist(body, TOKEN_2)
     os.environ['GIST_ID'] = gist_id
     yield gist_id
 
@@ -46,7 +46,7 @@ def teardown_gist():
     yield
     # Delete the gist in teardown
     if gist_id:
-        delete_gist(gist_id, GITHUB_TOKEN_2)
+        delete_gist(gist_id, TOKEN_2)
 
 
 @allure.feature("/GET One Public Gist")

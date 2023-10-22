@@ -17,13 +17,13 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 GITHUB_API_URL = "https://api.github.com/users/"
-GITHUB_TOKEN_2 = os.getenv('GITHUB_TOKEN_2')
+TOKEN_2 = os.getenv('TOKEN_2')
 USERNAME_EREKA = os.getenv('USERNAME_EREKA')
 USERNAME_MAX = os.getenv('USERNAME_MAX')
 
 @pytest.fixture(params=[
-    (get_headers_for_auth_user(GITHUB_TOKEN_2), PRIVATE_GIST),
-    (get_headers_for_auth_user(GITHUB_TOKEN_2), PUBLIC_GIST),
+    (get_headers_for_auth_user(TOKEN_2), PRIVATE_GIST),
+    (get_headers_for_auth_user(TOKEN_2), PUBLIC_GIST),
     (get_headers(), PUBLIC_GIST),
     (get_headers(), PRIVATE_GIST),
 ], ids=["AuthPrivate", "AuthPublic", "NoAuthPublic", "NoAuthPrivate"])
@@ -36,7 +36,7 @@ def test_data(request):
 def setup_gist(test_data):
     headers, body = test_data
     # Create a gist
-    gist_id = create_gist(body, GITHUB_TOKEN_2)
+    gist_id = create_gist(body, TOKEN_2)
     os.environ['GIST_ID'] = gist_id
     yield gist_id
 
@@ -48,7 +48,7 @@ def teardown_gist():
     yield
     # Delete the gist in teardown
     if gist_id:
-        delete_gist(gist_id, GITHUB_TOKEN_2)
+        delete_gist(gist_id, TOKEN_2)
 
 
 @allure.feature("/GET Gists via /users/{username}/gists")
@@ -73,7 +73,7 @@ class TestGistInUsernameGists:
 
         with allure.step("Assert gist visibility in response for GET /users/{username}/gists"):
             if body == PRIVATE_GIST:
-                if headers == get_headers_for_auth_user(GITHUB_TOKEN_2):
+                if headers == get_headers_for_auth_user(TOKEN_2):
                     assert gist_id in gist_ids, f"Private Gist ID {gist_id} not found in response for authed user."
                     print(f"Private Gist {gist_id} is found in response for auth user. Test passed")
                 elif headers == get_headers():
@@ -81,7 +81,7 @@ class TestGistInUsernameGists:
                                                      f"user.")
                     print(f"Private Gist {gist_id} is not visible for unauthorized users in response. Test passed")
             elif body == PUBLIC_GIST:
-                if headers == get_headers_for_auth_user(GITHUB_TOKEN_2):
+                if headers == get_headers_for_auth_user(TOKEN_2):
                     assert gist_id in gist_ids, f"Public Gist ID {gist_id} not found in response for authed user."
                     print(f"Public Gist {gist_id} is found in response for auth user. Test passed")
                 elif headers == get_headers():

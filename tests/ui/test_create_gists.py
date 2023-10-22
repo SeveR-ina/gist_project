@@ -23,7 +23,7 @@ USER_PASS = os.getenv('USER_PASS')
 
 # USER_EREKA_EMAIl = os.getenv('USER_EREKA_EMAIl')
 
-GITHUB_TOKEN_2 = os.getenv('GITHUB_TOKEN_2')
+TOKEN_2 = os.getenv('TOKEN_2')
 USER_MAX_EMAIl = os.getenv('USER_MAX_EMAIl')
 
 
@@ -39,7 +39,7 @@ class TestGistCreationUI:
             page = browser.new_page()
             login_page = LoginPage(page)
 
-            login_page.navigate_to_login_page(GITHUB_TOKEN_2)
+            login_page.navigate_to_login_page(TOKEN_2)
             with allure.step("Login"):
                 login_page.login(USER_MAX_EMAIl, USER_PASS)
 
@@ -78,4 +78,4 @@ def teardown(request):
             request.node.parent.name == "TestGistCreationUI"
             and request.node.rep_call.passed
     ):
-        delete_gist(gist_id, GITHUB_TOKEN_2)
+        delete_gist(gist_id, TOKEN_2)
