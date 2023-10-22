@@ -59,7 +59,7 @@ jobs:
 
       - name: Generate Allure report
         run: |
-          "C:\Program Files\allure-2.18.1\bin" generate $env:ALLURE_RESULTS_DIR --clean -o $env:GITHUB_WORKSPACE/allure-report
+          "C:\Program Files\allure-2.18.1\bin\allure.bat" generate $env:ALLURE_RESULTS_DIR --clean -o $env:GITHUB_WORKSPACE/allure-report
         shell: PowerShell
 
       - name: Upload Allure report
