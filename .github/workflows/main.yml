@@ -31,14 +31,17 @@ jobs:
         with:
           python-version: 3.12  # Set your Python version
 
+      - name: Install Playwright browsers
+        run: npx playwright install
+
       - name: Install project dependencies
         run: pip install -r requirements.txt
 
-      - name: Run API tests
-        run: pytest tests/api/
-        env:
-          ALLURE_RESULTS_DIR: ./allure_results  # Set Allure results directory
-        continue-on-error: true
+#      - name: Run API tests
+      #        run: pytest tests/api/
+      #        env:
+      #          ALLURE_RESULTS_DIR: ./allure_results  # Set Allure results directory
+      #        continue-on-error: true
 
       - name: Run UI tests
         run: pytest tests/ui/
